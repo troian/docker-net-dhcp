@@ -76,13 +76,29 @@ type Plugin struct {
 
 // NewPlugin creates a new Plugin
 func NewPlugin(awaitTimeout time.Duration) (*Plugin, error) {
-	client, err := docker.NewClientWithOpts(
-		docker.WithHost("unix:///run/docker.sock"),
-		docker.WithVersion("v1.13.1"),
-		docker.WithTimeout(2*time.Second)) // If local Docker doesn't respond in under 2s, it's probably not ready.
-	if err != nil {
-		return nil, fmt.Errorf("failed to create docker client: %w", err)
+	var (
+		currentIteration = 0
+		maxRetries = 10
+		client *docker.Client
+		err    error
+	)
+	for {
+		client, err = docker.NewClientWithOpts(
+			docker.WithHost("unix:///run/docker.sock"),
+			docker.WithVersion("v1.13.1"),
+			docker.WithTimeout(5*time.Second)) // If local Docker doesn't respond in under 2s, it's probably not ready.
+		if err == nil {
+			break;
+		}
+
+		if currentIteration >= maxRetries {
+			return nil, fmt.Errorf("failed to connect to Docker: %w", err)
+		}
+
+		time.Sleep(5*time.Second)
+		currentIteration++
 	}
+	
 
 	p := Plugin{
 		awaitTimeout: awaitTimeout,

@@ -32,7 +32,7 @@ jobs:
       - name: Tag with release
         env:
           REGISTRY_USERNAME: ${{ github.actor }}
-          REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+          REGISTRY_PASSWORD: ${{ secrets.REPO_TOKEN }}
         run: |
           scripts/tag_multiarch_plugin.py -p $PLATFORMS "$DOCKER_REPO:latest" ${{ steps.vars.outputs.version }}
           scripts/tag_multiarch_plugin.py -p $PLATFORMS "$DOCKER_REPO:latest" release
@@ -41,7 +41,7 @@ jobs:
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+          REPO_TOKEN: '${{ secrets.REPO_TOKEN }}'
         with:
           tag_name: ${{ github.ref }}
           release_name: docker-net-dhcp ${{ steps.vars.outputs.version }}

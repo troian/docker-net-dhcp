@@ -14,8 +14,8 @@ import (
 	"github.com/vishvananda/netns"
 	"golang.org/x/sys/unix"
 
-	"github.com/asheliahut/docker-net-dhcp/pkg/udhcpc"
-	"github.com/asheliahut/docker-net-dhcp/pkg/util"
+	"github.com/troian/docker-net-dhcp/pkg/udhcpc"
+	"github.com/troian/docker-net-dhcp/pkg/util"
 )
 
 const pollTime = 100 * time.Millisecond
@@ -150,7 +150,7 @@ func (m *dhcpManager) setupClient(v6 bool) (chan error, error) {
 				switch event.Type {
 				// TODO: We can't really allow the IP in the container to be deleted, it'll delete some of our previously
 				// copied routes. Should this be handled somehow?
-				//case "deconfig":
+				// case "deconfig":
 				//	ip := m.LastIP
 				//	if v6 {
 				//		ip = m.LastIPv6
@@ -168,7 +168,7 @@ func (m *dhcpManager) setupClient(v6 bool) (chan error, error) {
 				//			Error("Failed to delete existing udhcpc address")
 				//	}
 				// We're `bound` from the beginning
-				//case "bound":
+				// case "bound":
 				case "renew":
 					log.
 						WithFields(m.logFields(v6)).

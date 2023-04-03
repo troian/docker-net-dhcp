@@ -9,7 +9,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"golang.org/x/sys/unix"
 
-	"github.com/asheliahut/docker-net-dhcp/pkg/plugin"
+	"github.com/troian/docker-net-dhcp/pkg/plugin"
 )
 
 var (

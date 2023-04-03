@@ -12,7 +12,7 @@ import (
 	"github.com/mitchellh/mapstructure"
 	"github.com/vishvananda/netlink"
 
-	"github.com/asheliahut/docker-net-dhcp/pkg/util"
+	"github.com/troian/docker-net-dhcp/pkg/util"
 )
 
 // DriverName is the name of the Docker Network Driver
@@ -20,7 +20,7 @@ const DriverName string = "net-dhcp"
 
 const defaultLeaseTimeout = 10 * time.Second
 
-var driverRegexp = regexp.MustCompile(`^ghcr\.io/asheliahut/docker-net-dhcp:.+$`)
+var driverRegexp = regexp.MustCompile(`^ghcr\.io/troian/docker-net-dhcp:.+$`)
 
 // IsDHCPPlugin checks if a Docker network driver is an instance of this plugin
 func IsDHCPPlugin(driver string) bool {
@@ -78,9 +78,9 @@ type Plugin struct {
 func NewPlugin(awaitTimeout time.Duration) (*Plugin, error) {
 	var (
 		currentIteration = 0
-		maxRetries = 10
-		client *docker.Client
-		err    error
+		maxRetries       = 10
+		client           *docker.Client
+		err              error
 	)
 	for {
 		client, err = docker.NewClientWithOpts(
@@ -88,17 +88,16 @@ func NewPlugin(awaitTimeout time.Duration) (*Plugin, error) {
 			docker.WithAPIVersionNegotiation(),
 			docker.WithTimeout(5*time.Second)) // If local Docker doesn't respond in under 2s, it's probably not ready.
 		if err == nil {
-			break;
+			break
 		}
 
 		if currentIteration >= maxRetries {
 			return nil, fmt.Errorf("failed to connect to Docker: %w", err)
 		}
 
-		time.Sleep(5*time.Second)
+		time.Sleep(5 * time.Second)
 		currentIteration++
 	}
-	
 
 	p := Plugin{
 		awaitTimeout: awaitTimeout,

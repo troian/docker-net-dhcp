@@ -1,4 +1,4 @@
-PLUGIN_NAME = ghcr.io/asheliahut/docker-net-dhcp
+PLUGIN_NAME = ghcr.io/troian/docker-net-dhcp
 PLUGIN_TAG ?= golang
 PLATFORMS ?= linux/amd64,linux/arm64
 

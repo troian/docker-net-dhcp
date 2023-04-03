@@ -16,7 +16,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/vishvananda/netns"
 
-	"github.com/asheliahut/docker-net-dhcp/pkg/util"
+	"github.com/troian/docker-net-dhcp/pkg/util"
 )
 
 const (
